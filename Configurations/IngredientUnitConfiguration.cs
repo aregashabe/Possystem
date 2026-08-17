@@ -10,6 +10,7 @@ public class IngredientUnitConfiguration : IEntityTypeConfiguration<IngredientUn
 
         builder.HasKey(c => c.Id);
         builder.Property(c => c.UnitName)
+         .HasMaxLength(50)
             .IsRequired();
         builder.HasIndex(c => c.UnitName).IsUnique();
         builder.Property(c => c.Description)
