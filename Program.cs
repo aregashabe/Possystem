@@ -5,6 +5,7 @@ using Scalar.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using POSsystem;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ICatagoryService, CatagoryService>();
 builder.Services.AddScoped<IIngredientUnitService, IngredientUnitService>();
@@ -22,7 +23,7 @@ builder.Services.AddCors(options =>
     });
 });
 // Register POSDbContext scoped for incoming HTTP requests
-builder.Services.AddDbContext<POSDbContext>(options =>options.UseNpgsql(builder.Configuration.GetConnectionString("TmsDatabase")));
+builder.Services.AddDbContext<POSDbContext>(options =>options.UseNpgsql(builder.Configuration.GetConnectionString("PosDatabase")));
 var jwtKey = builder.Configuration["Jwt:Key"]
     ?? throw new InvalidOperationException("JWT Key is missing.");
 
@@ -61,6 +62,11 @@ builder.Services
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    await AdminInitializer.InitializeAsync(scope.ServiceProvider);
+}
+app.UseMiddleware<RequestLoggingMiddleware>();
 app.UseCors("AngularClient");
 app.UseAuthentication();
 app.UseAuthorization();

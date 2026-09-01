@@ -64,6 +64,8 @@ public IActionResult Me()
 {
     return Ok(new
     {
+        FirstName = User.FindFirstValue("FirstName"),
+        LastName = User.FindFirstValue("LastName"),
         Email = User.FindFirstValue(ClaimTypes.Email),
         Role = User.FindFirstValue(ClaimTypes.Role)
     });

@@ -55,51 +55,53 @@ public class UserService : IUserService
     }
 
     private string GenerateJwtToken(User user)
+{
+    var jwtKey = _configuration["Jwt:Key"]
+        ?? throw new InvalidOperationException("JWT Key is missing.");
+
+    var issuer = _configuration["Jwt:Issuer"];
+    var audience = _configuration["Jwt:Audience"];
+
+    var claims = new List<Claim>
     {
-        var jwtKey = _configuration["Jwt:Key"]
-            ?? throw new InvalidOperationException("JWT Key is missing.");
+        new Claim(
+            JwtRegisteredClaimNames.Sub,
+            user.Id.ToString()),
 
-        var issuer = _configuration["Jwt:Issuer"];
-        var audience = _configuration["Jwt:Audience"];
+        new Claim(
+            ClaimTypes.Email,
+            user.Email),
 
-        var claims = new List<Claim>
-        {
-            new Claim(
-                JwtRegisteredClaimNames.Sub,
-                user.Id.ToString()),
+        new Claim(
+            "FirstName",
+            user.Firstname),
 
-            new Claim(
-                JwtRegisteredClaimNames.Email,
-                user.Email),
+        new Claim(
+            "LastName",
+            user.Lastname),
 
-            new Claim(
-                ClaimTypes.Name,
-                user.Firstname),
-              new Claim(
-                ClaimTypes.Name,
-                user.Lastname),
-            new Claim(
-                ClaimTypes.Role,
-                user.UserRole)
-        };
+        new Claim(
+            ClaimTypes.Role,
+            user.UserRole)
+    };
 
-        var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(jwtKey));
+    var key = new SymmetricSecurityKey(
+        Encoding.UTF8.GetBytes(jwtKey));
 
-        var credentials = new SigningCredentials(
-            key,
-            SecurityAlgorithms.HmacSha256);
+    var credentials = new SigningCredentials(
+        key,
+        SecurityAlgorithms.HmacSha256);
 
-        var token = new JwtSecurityToken(
-            issuer: issuer,
-            audience: audience,
-            claims: claims,
-            expires: DateTime.UtcNow.AddHours(2),
-            signingCredentials: credentials);
+    var token = new JwtSecurityToken(
+        issuer: issuer,
+        audience: audience,
+        claims: claims,
+        expires: DateTime.UtcNow.AddHours(2),
+        signingCredentials: credentials);
 
-        return new JwtSecurityTokenHandler()
-            .WriteToken(token);
-    }
+    return new JwtSecurityTokenHandler()
+        .WriteToken(token);
+}
     public async Task<List<User>> GetAllUsersAsync()
 {
     return await _dbContext.Users
