@@ -10,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<ICatagoryService, CatagoryService>();
 builder.Services.AddScoped<IIngredientUnitService, IngredientUnitService>();
 builder.Services.AddOpenApi();
+builder.Services.AddScoped<IWaiterService, WaiterService>();
+builder.Services.AddScoped<IDeliveryService, DeliveryService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddCors(options =>
 {
