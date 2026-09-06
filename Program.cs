@@ -13,6 +13,12 @@ builder.Services.AddOpenApi();
 builder.Services.AddScoped<IWaiterService, WaiterService>();
 builder.Services.AddScoped<IDeliveryService, DeliveryService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IVatService, VatService>();
+builder.Services.AddScoped<IFoodmenuService, FoodmenuService>();
+builder.Services.AddScoped<IIngredientService, IngredientService>();
+builder.Services.AddScoped<IPosOrderService, PosOrderService>();
+builder.Services.AddScoped<ITableService, TableService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AngularClient", policy =>

@@ -1,8 +1,6 @@
-using System.ComponentModel.DataAnnotations.Schema;
+namespace POSsystem.DTOs;
 
-namespace POSsystem.Entities;
-
-public class Foodmenu
+public class FoodmenuDto
 {
     public int Id { get; set; }
 
@@ -25,12 +23,4 @@ public class Foodmenu
     public bool Bar { get; set; }
 
     public string? Photo { get; set; }
-
-    public Vat Vat { get; set; } = null!;
-
-    [ForeignKey(nameof(CatagoryId))]
-    public Category Category { get; set; } = null!;
-
-    public ICollection<Ingredient> Ingredients { get; set; }
-        = new List<Ingredient>();
 }

@@ -47,8 +47,8 @@ public class UserService : IUserService
         {
             Token = token,
             UserId = user.Id,
-           FirstName = user.Firstname,
-           LastName = user.Lastname,
+           Firstname = user.Firstname,
+           Lastname = user.Lastname,
            Email = user.Email,
            UserRole = user.UserRole
         };
@@ -73,11 +73,11 @@ public class UserService : IUserService
             user.Email),
 
         new Claim(
-            "FirstName",
+            "Firstname",
             user.Firstname),
 
         new Claim(
-            "LastName",
+            "Lastname",
             user.Lastname),
 
         new Claim(

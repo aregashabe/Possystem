@@ -1,10 +1,16 @@
 using POSsystem.DTOs;
+
 namespace POSsystem.Services;
-public interface IIngredientUnitService
+
+public interface IIngredientService
 {
-    Task<List<IngredientUnitDto>> GetAllIngredientUnitsAsync();
-    Task<IngredientUnitDto> GetIngredientUnitByIdAsync(int id);
-    Task<IngredientUnitDto> CreateIngredientUnitAsync(IngredientUnitDto ingredientUnitDto);
-    Task<IngredientUnitDto> UpdateIngredientUnitAsync(int id, IngredientUnitDto ingredientUnitDto);
-    Task<bool> DeleteIngredientUnitAsync(int id);
+    Task<List<IngredientDto>> GetAllAsync();
+
+    Task<IngredientDto?> GetByIdAsync(int id);
+
+    Task<IngredientDto> CreateAsync(IngredientDto dto);
+
+    Task<bool> UpdateAsync(int id, IngredientDto dto);
+
+    Task<bool> DeleteAsync(int id);
 }

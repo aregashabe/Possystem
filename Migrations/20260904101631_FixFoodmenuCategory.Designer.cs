@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using POSsystem.Data;
@@ -11,9 +12,11 @@ using POSsystem.Data;
 namespace POSsystem.Migrations
 {
     [DbContext(typeof(POSDbContext))]
-    partial class POSDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260904101631_FixFoodmenuCategory")]
+    partial class FixFoodmenuCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -227,51 +230,6 @@ namespace POSsystem.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("IngredientUnits");
-                });
-
-            modelBuilder.Entity("POSsystem.Entities.Payment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AddedById")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("BillNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<decimal>("GrandTotal")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("PaymentType")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Total")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal>("VatAmount")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AddedById");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("POSsystem.Entities.PosOrder", b =>
@@ -514,7 +472,7 @@ namespace POSsystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tables");
+                    b.ToTable("Tabless");
                 });
 
             modelBuilder.Entity("POSsystem.Entities.User", b =>
@@ -659,25 +617,6 @@ namespace POSsystem.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("IngredientUnit");
-                });
-
-            modelBuilder.Entity("POSsystem.Entities.Payment", b =>
-                {
-                    b.HasOne("POSsystem.Entities.User", "AddedBy")
-                        .WithMany()
-                        .HasForeignKey("AddedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("POSsystem.Entities.PosOrder", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AddedBy");
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("POSsystem.Entities.PosOrder", b =>

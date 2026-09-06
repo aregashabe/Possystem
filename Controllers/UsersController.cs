@@ -17,14 +17,33 @@ public class UsersController : ControllerBase
         _userService = userService;
     }
 [Authorize(Roles = "Admin")]
-    [HttpPost]
-    public async Task<IActionResult> CreateUser([FromBody] User user)
+[HttpPost]
+public async Task<IActionResult> CreateUser([FromBody] CreateUserDto dto)
+{
+    var user = new User
     {
-        var createdUser = await _userService.createUserAsync(user);
-        return CreatedAtAction(nameof(CreateUser), new { id = createdUser.Id }, createdUser);
-    }
-    [HttpPost("login")]
-public async Task<IActionResult> Login(LoginDto dto)
+        Firstname = dto.Firstname,
+        Lastname = dto.Lastname,
+        Email = dto.Email,
+        Mobile = dto.Mobile,
+        UserRole = dto.UserRole,
+        Password = dto.Password
+    };
+
+    var createdUser = await _userService.createUserAsync(user);
+
+    return Ok(new
+    {
+        createdUser.Id,
+        createdUser.Firstname,
+        createdUser.Lastname,
+        createdUser.Email,
+        createdUser.Mobile,
+        createdUser.UserRole
+    });
+}
+[HttpPost("login")]
+public async Task<IActionResult> Login([FromBody] LoginDto dto)
 {
     var result = await _userService.LoginAsync(
         dto.Email,
@@ -44,7 +63,7 @@ public async Task<IActionResult> Login(LoginDto dto)
         new CookieOptions
         {
             HttpOnly = true,
-            Secure = false,
+            Secure = false, // true when using HTTPS in production
             SameSite = SameSiteMode.Lax,
             Expires = DateTimeOffset.UtcNow.AddHours(2)
         });
@@ -52,8 +71,8 @@ public async Task<IActionResult> Login(LoginDto dto)
     return Ok(new
     {
         result.UserId,
-        result.FirstName,
-        result.LastName,
+        result.Firstname,
+        result.Lastname,
         result.Email,
         result.UserRole
     });

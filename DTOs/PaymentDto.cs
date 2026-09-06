@@ -1,15 +1,12 @@
-namespace POSsystem.Entities;
+namespace POSsystem.DTOs;
 
-public class Payment
+public class PaymentDto
 {
     public int Id { get; set; }
 
     public string BillNumber { get; set; } = string.Empty;
 
-    // Order relationship
     public int OrderId { get; set; }
-
-    public PosOrder Order { get; set; } = null!;
 
     public decimal Total { get; set; }
 
@@ -19,10 +16,8 @@ public class Payment
 
     public string? PaymentType { get; set; }
 
-    // User who added the payment
     public int AddedById { get; set; }
 
-    public User AddedBy { get; set; } = null!;
     public DateTime Date { get; set; } = DateTime.Now;
 
     public string? Status { get; set; }
